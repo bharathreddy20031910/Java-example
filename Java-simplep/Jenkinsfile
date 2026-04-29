@@ -8,17 +8,17 @@ pipeline{
         stage('Checkout'){
             steps{
                 echo 'Checking out...'
-                git 'https://github.com/bharathreddy20031910/Java-example.git' , branch: 'main'
+                git url: 'https://github.com/bharathreddy20031910/Java-example.git' , branch: 'main'
 
                 }
         }
-        stage('Change Dir'){
-                sh 'cd Java-simplep'
-        }
         stage('Build'){
             steps{
-                echo 'Building...'
+                dir('Java-simplep'){
+                     echo 'Building...'
                 sh 'mvn clean package'
+                }
+               
             }
         }
         stage('Test'){
