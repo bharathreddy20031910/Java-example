@@ -7,6 +7,7 @@ pipeline{
         stage('Build'){
             steps{
                 echo 'Building...'
+                cd Java-simplep
                 sh 'mvn clean package'
             }
         }
