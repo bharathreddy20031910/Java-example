@@ -10,7 +10,8 @@ pipeline{
             steps{
                 echo 'Checking out...'
                 git url: 'https://github.com/bharathreddy20031910/Java-example.git' , branch: 'main'
-
+                sh 'java -version'
+                sh 'mvn -version'
                 }
         }
         stage('Build'){
