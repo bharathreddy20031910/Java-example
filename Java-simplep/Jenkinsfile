@@ -1,76 +1,20 @@
-pipeline {
+pipeline{
     agent any
-
-    tools {
-        // Update these names if your Jenkins Global Tool Configuration uses different labels.
-        jdk 'jdk21'
-        maven 'maven3'
-    }
-
-    options {
-        timestamps()
-        disableConcurrentBuilds()
-    }
-
-    environment {
-        MAVEN_ARGS = '-B -ntp'
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+    stages{
+        stage('Build'){
+            steps{
+                echo 'Building...'
             }
         }
-
-        stage('Build') {
-            steps {
-                script {
-                    if (isUnix()) {
-                        sh "mvn ${env.MAVEN_ARGS} clean compile"
-                    } else {
-                        bat "mvn %MAVEN_ARGS% clean compile"
-                    }
-                }
+        stage('Test'){
+            steps{
+                echo 'Testing...'
             }
         }
-
-        stage('Test') {
-            steps {
-                script {
-                    if (isUnix()) {
-                        sh "mvn ${env.MAVEN_ARGS} test"
-                    } else {
-                        bat "mvn %MAVEN_ARGS% test"
-                    }
-                }
+        stage('Deploy'){
+            steps{
+                echo 'Deploying...'
             }
-            post {
-                always {
-                    junit allowEmptyResults: false, testResults: 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-
-        stage('Package') {
-            steps {
-                script {
-                    if (isUnix()) {
-                        sh "mvn ${env.MAVEN_ARGS} package -DskipTests"
-                    } else {
-                        bat "mvn %MAVEN_ARGS% package -DskipTests"
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        }
-        always {
-            deleteDir()
         }
     }
 }
